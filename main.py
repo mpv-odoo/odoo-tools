@@ -13,7 +13,7 @@ from random import randrange
 ODOO_SRC = '/Users/martin/Documents/GitHub/Work/src/odoo'
 ENTERPRISE_SRC = '/Users/martin/Documents/GitHub/Work/src/enterprise'
 DB_USERNAME = 'odoo'
-DB_PASSWORD = 'c0cac0la'
+DB_PASSWORD = ''
 
 
 
