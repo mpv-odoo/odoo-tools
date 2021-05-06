@@ -6,6 +6,17 @@ import sys
 import json
 from random import randrange
 
+
+############################
+######### Settings #########
+############################
+ODOO_SRC = '/Users/martin/Documents/GitHub/Work/src/odoo'
+ENTERPRISE_SRC = '/Users/martin/Documents/GitHub/Work/src/enterprise'
+DB_USERNAME = 'odoo'
+DB_PASSWORD = 'c0cac0la'
+
+
+
 ############################
 ####### Arg Parsing ########
 ############################
@@ -21,59 +32,97 @@ if odoo_version != 14 and odoo_version != 13 and odoo_version != 12:
    print('invalid odoo version')
    exit()
 
-odoo_folder_name = sys.argv[2]
+odoo_addon_name = sys.argv[2]
 
-############################
-##### Settings Parsing #####
-############################
-settings_f = open('settings.json')
-settings = json.load(settings_f)
 
 
 ############################
 ####### Folder Init ########
 ############################
 cwd = os.getcwd()
-if os.path.exists(cwd + '/' + odoo_folder_name):
-   print('Skipping creation of directory as it already exists')
+if os.path.exists(cwd + '/' + odoo_addon_name):
+   print('Skipping creation of project directory as it already exists')
 else:
-   os.mkdir(f'{cwd}/{odoo_folder_name}')
-
-
-# Make addons folder
-if os.path.exists(cwd + '/' + odoo_folder_name + '/addons'):
-   print('Skipping creating directory')
-else: 
-   os.mkdir(f'{cwd}/{odoo_folder_name}/addons')
+   print('Creating project directory')
+   os.mkdir(f'{cwd}/{odoo_addon_name}')
 
 # Make addons folder
-if os.path.exists(cwd + '/' + odoo_folder_name + '/config'):
-   print('Skipping creating directory')
-else: 
-   os.mkdir(f'{cwd}/{odoo_folder_name}/config')
+if os.path.exists(cwd + '/' + odoo_addon_name + '/addons'):
+   print('Skipping creating directory as it seems to exist already')
+else:
+   print('Creating addons directory')
+   os.mkdir(f'{cwd}/{odoo_addon_name}/addons')
+
+# Create symlink with odoo source
+print('Creating a symlink with the odoo source folder')
+subprocess.call(
+   f'ln -s {ODOO_SRC} {odoo_addon_name}/odoo',
+   stdout=subprocess.DEVNULL,
+   stderr=subprocess.DEVNULL,
+   shell=True
+)
+# Create symlink with enterprise source
+print('Creating a symlink with the odoo enterprise source folder')
+subprocess.call(
+   f'ln -s {ENTERPRISE_SRC} {odoo_addon_name}/enterprise',
+   stdout=subprocess.DEVNULL,
+   stderr=subprocess.DEVNULL,
+   shell=True
+)
 
 
 
-''' 
-Length of the dictionary we
-are going to make
-'''
-dict_len = 1000
+############################
+####### Git Init ###########
+############################
 
-# Create a dictionary with 1000 random words
-rand_words = subprocess.run(['head', '-n', str(dict_len), '/usr/share/dict/words'], stdout=subprocess.PIPE).stdout.decode("utf-8").split()
+# Switch the odoo git to be the correct version
+print(f'Changing odoo src branch to {odoo_version}.0')
+subprocess.call(
+   f'cd {odoo_addon_name}/odoo/ && git checkout {odoo_version}.0 && cd ..',
+   stdout=subprocess.DEVNULL,
+   stderr=subprocess.DEVNULL,
+   shell=True
+)
+# Switch the enterprise git to be the correct version
+print(f'Changing odoo enterprise src branch to {odoo_version}.0')
+subprocess.call(
+   f'cd {odoo_addon_name}/enterprise && git checkout {odoo_version}.0 & cd ..',
+   stdout=subprocess.DEVNULL,
+   stderr=subprocess.DEVNULL,
+   shell=True
+)
 
-'''
-   @odoo_name is going to be the string that we will
-   name both our odooo and database container
-'''
-odoo_name = (rand_words[randrange(dict_len)] + '-' + rand_words[randrange(dict_len)]).lower()
 
-print(f'Generated Container Name: {odoo_name}')
 
 ############################
 ###### Database Init #######
 ############################
+''' 
+Create dictionary of random
+words to name the database
+docker
+'''
+dict_len = 1000
+
+# Create a dictionary with 1000 random words
+rand_words = subprocess.run(
+   f'head -n {str(dict_len)} /usr/share/dict/words',
+   stdout=subprocess.PIPE,
+   shell=True
+).stdout.decode("utf-8").split()
+
+'''
+   @db_name is going to be the string that we will
+   name both our odooo and database container
+'''
+db_name = (
+   rand_words[randrange(dict_len)] + 
+   '-' + 
+   rand_words[randrange(dict_len)]
+).lower()
+
+print(f'Generated Database Container Name: {db_name}')
 
 '''
 Random port must be > 1024, since
@@ -83,39 +132,28 @@ priviledge
 db_port = randrange(1024, 10000)
 db_init = False
 
-#while not db_init:
 
-# Create the database container and print its id
-print('Database Container ID: ')
-db_exit_code = subprocess.run([
-   'docker', 'run',
-   f'--name={odoo_name}-db',
+# # Create the database container and print its id
+print('Starting Database Container')
+subprocess.call([
+   f'docker', f'run',
+   f'--name={db_name}-db',
    f'-p', f'{db_port}:5432',
    f'-d',
-   f'-e', f'POSTGRES_PASSWORD={settings["db_password"]}',
-   f'-e', f'POSTGRES_USER={settings["db_username"]}',
+   f'-e', f'POSTGRES_PASSWORD={DB_PASSWORD}',
+   f'-e', f'POSTGRES_USER={DB_USERNAME}',
    f'-e', f'POSTGRES_DB=postgres',
-   f'postgres'
-])
-print(db_exit_code)
-print(type(db_exit_code))
-if db_exit_code == 0:
-   db_init = True
+   f'postgres'],
+   stdout=subprocess.DEVNULL,
+   stderr=subprocess.DEVNULL,
+   shell=True
+)
 
 
-
-odoo_port = randrange(1024, 10000)
-
-
-odoo_exit_code = subprocess.run([
-   'docker', 'run',
-   f'--name={odoo_name}',
-   f'-p', f'{odoo_port}:8069',
-   f'-d',
-   f'-e', f'USER=odoo',
-   f'-e', f'PASSWORD=c0cac0la',
-   f'--link', f'{odoo_name}-db:db',
-   f'-v', f'{cwd}/{odoo_folder_name}/config:/etc/odoo',
-   f'-v', f'{cwd}/{odoo_folder_name}/addons:/mnt/extra-addons',
-   f'odoo'
-])
+############################
+####### VSCode Init ########
+############################
+subprocess.call(
+   f'code {odoo_addon_name}',
+   shell=True
+)

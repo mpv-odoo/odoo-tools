@@ -1,4 +1,6 @@
 {
+   "odoo_src": "/Users/martin/Documents/GitHub/Work/src/odoo",
+   "enterprise_src": "/Users/martin/Documents/GitHub/Work/src/enterprise",
    "db_username": "odoo",
    "db_password": "c0cac0la"
 
