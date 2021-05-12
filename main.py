@@ -12,8 +12,9 @@ from random import randrange
 ############################
 ODOO_SRC = '/Users/martin/Documents/GitHub/Work/src/odoo'
 ENTERPRISE_SRC = '/Users/martin/Documents/GitHub/Work/src/enterprise'
+VENV_SRC = '/Users/martin/Documents/GitHub/Work/src/venv'
 DB_USERNAME = 'odoo'
-DB_PASSWORD = ''
+DB_PASSWORD = 'c0cac0la'
 
 
 
@@ -48,6 +49,14 @@ parser.add_argument(
    action='store_true',
    help = 'Add this flag if you want to also open up vscode in the new project directory'
 )
+parser.add_argument(
+   '-v',
+   '--venv',
+   action = 'store_true',
+   help = 'Add this flag if you want to also switch to the appropriate odoo virtual environments'
+)
+
+
 args = parser.parse_args()
 
 
@@ -55,59 +64,38 @@ args = parser.parse_args()
 ############################
 ####### Folder Init ########
 ############################
-cwd = os.getcwd()
-if os.path.exists(cwd + '/' + args.addon_name):
-   print('Skipping creation of project directory as it already exists')
-else:
-   print('Creating project directory')
-   os.mkdir(f'{cwd}/{args.addon_name}')
+# cwd = os.getcwd()
+# if os.path.exists(cwd + '/' + args.addon_name):
+#    print('Skipping creation of project directory as it already exists')
+# else:
+#    print('Creating project directory')
+#    os.mkdir(f'{cwd}/{args.addon_name}')
 
-# Make addons folder
-if os.path.exists(cwd + '/' + args.addon_name + '/addons'):
-   print('Skipping creating directory as it seems to exist already')
-else:
-   print('Creating addons directory')
-   os.mkdir(f'{cwd}/{args.addon_name}/addons')
+# # Make addons folder
+# if os.path.exists(cwd + '/' + args.addon_name + '/addons'):
+#    print('Skipping creating directory as it seems to exist already')
+# else:
+#    print('Creating addons directory')
+#    os.mkdir(f'{cwd}/{args.addon_name}/addons')
 
-# Create symlink with odoo source
-print('Creating a symlink with the odoo source folder')
-subprocess.call(
-   f'ln -s {ODOO_SRC} {args.addon_name}/odoo',
-   stdout=subprocess.DEVNULL,
-   stderr=subprocess.DEVNULL,
-   shell=True
-)
-# Create symlink with enterprise source
-print('Creating a symlink with the odoo enterprise source folder')
-subprocess.call(
-   f'ln -s {ENTERPRISE_SRC} {args.addon_name}/enterprise',
-   stdout=subprocess.DEVNULL,
-   stderr=subprocess.DEVNULL,
-   shell=True
-)
+# # Create symlink with odoo source
+# print('Creating a symlink with the odoo source folder')
+# subprocess.call(
+#    f'ln -s {ODOO_SRC} {args.addon_name}/odoo',
+#    stdout=subprocess.DEVNULL,
+#    stderr=subprocess.DEVNULL,
+#    shell=True
+# )
+# # Create symlink with enterprise source
+# print('Creating a symlink with the odoo enterprise source folder')
+# subprocess.call(
+#    f'ln -s {ENTERPRISE_SRC} {args.addon_name}/enterprise',
+#    stdout=subprocess.DEVNULL,
+#    stderr=subprocess.DEVNULL,
+#    shell=True
+# )
 
 
-
-############################
-####### Git Init ###########
-############################
-
-# Switch the odoo git to be the correct version
-print(f'Changing odoo src branch to {args.odoo_version}.0')
-subprocess.call(
-   f'cd {args.addon_name}/odoo/ && git checkout {args.odoo_version}.0 && cd ..',
-   stdout=subprocess.DEVNULL,
-   stderr=subprocess.DEVNULL,
-   shell=True
-)
-# Switch the enterprise git to be the correct version
-print(f'Changing odoo enterprise src branch to {args.odoo_version}.0')
-subprocess.call(
-   f'cd {args.addon_name}/enterprise && git checkout {args.odoo_version}.0 & cd ..',
-   stdout=subprocess.DEVNULL,
-   stderr=subprocess.DEVNULL,
-   shell=True
-)
 
 
 
