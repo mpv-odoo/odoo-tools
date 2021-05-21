@@ -4,17 +4,15 @@
 # Ex: `source switch-odoo.sh 12`
 
 
-venvs='/Users/martin/Documents/GitHub/Work/src/odoo-venvs'
-odoo_src='/Users/martin/Documents/GitHub/Work/src/odoo/'
-enterprise_addons_src='/Users/martin/Documents/GitHub/Work/src/enterprise/'
+venvs="${ODOO_SRC}/odoo-venvs"
+odoo_src="${ODOO_SRC}/odoo/"
+enterprise_addons_src="${ODOO_SRC}/enterprise/"
 
 
 odoo_version=$1
 
-if [ $odoo_version -ne 14 ] && [ $odoo_version -ne 13 ] && [ $odoo_version -ne 12 ] && [ $odoo_version -ne 11 ]
+if [ "$odoo_version" -eq "14" ] || [ "$odoo_version" -eq "13" ] || [ "$odoo_version" -eq "12" ] || [ "$odoo_version" -eq "11" ]
 then
-    echo 'invalid version number, exitting'
-else 
     # Switch venvs to be the correct version
     source "${venvs}/odoo-${odoo_version}/bin/activate"
 
@@ -25,8 +23,12 @@ else
     # Switch enterprise addons to correct branch
     cd $enterprise_addons_src && git checkout ${odoo_version}.0 && git pull
     cd -
+
+    echo "Successfully switched to version ${odoo_version}.0 of Odoo"
+
+  
+else 
+      echo 'invalid version number, exitting'
 fi
 
 
-
-echo $odoo_version
