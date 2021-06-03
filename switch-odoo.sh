@@ -25,10 +25,7 @@ then
     cd -
 
     echo "Successfully switched to version ${odoo_version}.0 of Odoo"
-
   
 else 
       echo 'invalid version number, exitting'
 fi
-
-
