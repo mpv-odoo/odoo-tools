@@ -26,14 +26,5 @@ parser.add_argument(
 args = parser.parse_args()
 
 print('Starting Database Container')
-subprocess.call([
-    f'docker run --name={args.db_name} \
-    -p {args.port}:5432 \
-    -e POSTGRES_PASSWORD={os.getenv("DB_PASSWORD")} \
-    -e POSTGRES_USER={os.getenv("DB_USERNAME")} \
-    -e POSTGRES_DB=postgres \
-    -d \
-    postgres'
-],
-    shell=True
-)
+docker_cmd = f'docker run --name={args.db_name} -p {args.port}:5432 -e POSTGRES_PASSWORD={os.getenv("DB_PASSWORD")} -e POSTGRES_USER={os.getenv("DB_USERNAME")} -e POSTGRES_DB=postgres -d postgres'
+os.system(docker_cmd)
