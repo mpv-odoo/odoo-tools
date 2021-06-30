@@ -10,9 +10,11 @@
 echo $@
 
 
-ODOO_CONF="../odoo.conf"
+ODOO_CONF=$(realpath $1)
+shift
 
+echo $ODOO_CONF
 
 if test -f "$ODOO_CONF"; then
-    python3 -m debugpy --listen 5678 "${ODOO_SRC}/odoo/odoo-bin" --config=${ODOO_CONF} $@
+    python3 -m debugpy --listen 5678 "${ODOO_SRC}/odoo/odoo-bin" --config=$ODOO_CONF $@
 fi

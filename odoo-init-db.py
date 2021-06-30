@@ -1,14 +1,13 @@
 #!/usr/local/bin/python3
 
 import os
-import subprocess
 import argparse
 from dotenv import load_dotenv, dotenv_values
 
 ############################
 ####### Arg Parsing ########
 ############################
-load_dotenv()
+load_dotenv('odoo.env')
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
