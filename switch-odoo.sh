@@ -14,7 +14,7 @@ odoo_version=$1
 if [ "$odoo_version" -eq "14" ] || [ "$odoo_version" -eq "13" ] || [ "$odoo_version" -eq "12" ] || [ "$odoo_version" -eq "11" ]
 then
     # Switch venvs to be the correct version
-    source "${venvs}/odoo-${odoo_version}/bin/activate"
+    pyenv activate $odoo_version
 
     # Switch odoo git to correct branch
     cd $odoo_src && git checkout ${odoo_version}.0 && git pull

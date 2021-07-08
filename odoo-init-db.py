@@ -7,7 +7,7 @@ from dotenv import load_dotenv, dotenv_values
 ############################
 ####### Arg Parsing ########
 ############################
-load_dotenv('odoo.env')
+load_dotenv('/usr/local/bin/odoo.env')
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
