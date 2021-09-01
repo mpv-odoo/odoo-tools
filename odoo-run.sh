@@ -1,20 +1,18 @@
-# Have flag for enabling debugging
-# open up odoo in browser if possible
-# globally run odoo command from anywhere
-
-
-# Check if odoo.conf exists in parent directory
-# If it does, then run with it
-# If it doesn't, 
+#!/bin/zsh
 
 echo $@
 
-
-ODOO_CONF=$(realpath $1)
-shift
-
-echo $ODOO_CONF
-
-if test -f "$ODOO_CONF"; then
+if [ "$1" = "default" ]
+then
+    shift
+    echo $ODOO_CONF
     python3 -m debugpy --listen 5678 "${ODOO_SRC}/odoo/odoo-bin" --config=$ODOO_CONF $@
+else
+    ODOO_CONF_ARG=$(realpath $1)
+    shift
+    echo $ODOO_CONF_ARG
+    python3 -m debugpy --listen 5678 "${ODOO_SRC}/odoo/odoo-bin" --config=$ODOO_CONF_ARG $@
 fi
+
+
+
