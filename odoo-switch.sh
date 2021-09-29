@@ -10,8 +10,9 @@ enterprise_addons_src="${ODOO_SRC}/enterprise/"
 odoo_version=$1
 
 echo $odoo_version
+echo 'Hello World'
 
-if [ "$odoo_version" = "v14" ] || [ "$odoo_version" = "v13" ] || [ "$odoo_version" = "v12" ] || [ "$odoo_version" = "v11" ]
+if [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
 then
     git_version="${odoo_version:1}"
 
@@ -19,14 +20,14 @@ then
     pyenv activate $odoo_version
 
     # Switch odoo git to correct branch
-    cd $odoo_src && git checkout ${git_version}.0 && git pull
+    cd $odoo_src && git stash && git checkout ${odoo_version}.0 && git pull
     cd -
 
     # Switch enterprise addons to correct branch
-    cd $enterprise_addons_src && git checkout ${git_version}.0 && git pull
+    cd $enterprise_addons_src && git stash && git checkout ${odoo_version}.0 && git pull
     cd -
 
-    echo "Successfully switched to version ${git_version}.0 of Odoo"
+    echo "Successfully switched to version ${odoo_version}.0 of Odoo"
   
 else 
       echo 'invalid version number, exitting'
