@@ -10,7 +10,6 @@ enterprise_addons_src="${ODOO_SRC}/enterprise/"
 odoo_version=$1
 
 echo $odoo_version
-echo 'Hello World'
 
 if [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
 then
