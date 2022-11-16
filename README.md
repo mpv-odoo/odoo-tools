@@ -16,7 +16,7 @@ odoo@odoo: $ odoo ./odoo.conf -d new_db -i base
 
 
 ## Odoo Conf (odoo-conf.sh)
-This script will create a odoo.conf file in your current directory based off of the odoo-sample.conf file in the root of the `ODOO_SRC` directory. It will also add your current directory to odoo's addons path. You can make any changes you wish to the odoo-sample.conf template
+This script will create a odoo.conf file in your current directory based off of the odoo-sample.conf file in the root of the `ODOO_SRC` directory. It will also add your current directory to odoo's addons path. You can make any changes you wish to the odoo-sample.conf template. I would recommend populating `admin_passwd` and `db_password`
 ### Example
 ```console
 odoo@odoo: $ odoo-conf
