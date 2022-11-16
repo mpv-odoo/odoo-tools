@@ -34,7 +34,7 @@ I use [zsh](https://ohmyz.sh/) (highly recommended for any terminal), so the ste
     ./ODOO_SRC
     ├── odoo #odoo source code
     ├── enterprise #enterprise source code
-    └── odoo-sample.conf #The template for odoo-conf.sh. (can copy from tools/odoo-sample.conf)
+    └── odoo-sample.conf #The template for odoo-conf.sh (can copy from tools/odoo-sample.conf)
 
 ```console
 odoo@odoo: $ echo "export ODOO_SRC=/odoo/root/directory" >> ~/.zshrc.
@@ -43,7 +43,7 @@ odoo@odoo: $ echo "export ODOO_SRC=/odoo/root/directory" >> ~/.zshrc.
 
 
 ## Adding to Global Bin
-To be able to get these scripts running from any directory, you need to add them to your computer's bin directory. I would recommend adding them to `/usr/local/bin/` as this is for programs that are not managed by a distribution package.
+To be able to get these scripts running from any directory, you need to add them to your computer's bin directory. I would recommend adding them to `/usr/local/bin/` if your distribution has it, as this is the usual directory for programs that are not managed by a distribution package.
 
 I create a symlink instead of copying the files over. A symlink is just a shortcut to the file, so any change I make to the files in my current directory will change the behavior of my global versions.
 
@@ -54,9 +54,9 @@ odoo@odoo: $ ln -s $(pwd)/tools/odoo-run.sh /usr/local/bin/odoo
 odoo@odoo: $ ln -s $(pwd)/tools/odoo-conf.sh /usr/local/bin/odoo-conf
 ```
 
-Now if you `ls` into /usr/local/bin, you should see both `odoo-switch` and `odoo`. Restart your terminal, and you should be able to call `odoo-switch` and `odoo` and have these 2 scripts run.
+Restart your terminal, and you should be able to call `odoo-switch` and `odoo` and have these 2 scripts run. Make sure these files are also executable.
 
-> **_IMPORTANT: _**, odoo-switch must be ran with `source` in front of it. This is to allow the script to run in the current shell so Pyenv keeps the newly switched virtual environment when the execution finishes. For ease of use, I also created a function called swodoo (switch odoo) in my .zshrc file that called odoo-switch with source. This way you don't need to call `source odoo-switch` and can just call `odoo-switch` directly. Run the following command if you want to do the same:
+> **_IMPORTANT: _**, odoo-switch must be ran with `source` in front of it. This is to allow the script to run in the current shell so Pyenv keeps the newly switched virtual environment when the execution finishes. For ease of use, I also created a function called swodoo (switch odoo) in my .zshrc file that called odoo-switch with source. This way you don't need to call `source odoo-switch` and can just call the function `swodoo` directly. Run the following command if you want to do the same:
 ```console
 echo "
 function swodoo() {
