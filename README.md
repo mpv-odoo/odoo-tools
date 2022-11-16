@@ -56,7 +56,7 @@ odoo@odoo: $ ln -s $(pwd)/tools/odoo-conf.sh /usr/local/bin/odoo-conf
 
 Restart your terminal, and you should be able to call `odoo-switch` and `odoo` and have these 2 scripts run. Make sure these files are also executable.
 
-> **_IMPORTANT: _**, odoo-switch must be ran with `source` in front of it. This is to allow the script to run in the current shell so Pyenv keeps the newly switched virtual environment when the execution finishes. For ease of use, I also created a function called swodoo (switch odoo) in my .zshrc file that called odoo-switch with source. This way you don't need to call `source odoo-switch` and can just call the function `swodoo` directly. Run the following command if you want to do the same:
+> **_IMPORTANT:_** odoo-switch must be ran with `source` in front of it. This is to allow the script to run in the current shell so Pyenv keeps the newly switched virtual environment when the execution finishes. For ease of use, I also created a function called swodoo (switch odoo) in my .zshrc file that called odoo-switch with source. This way you don't need to call `source odoo-switch` and can just call the function `swodoo` directly. Run the following command if you want to do the same:
 ```console
 echo "
 function swodoo() {
