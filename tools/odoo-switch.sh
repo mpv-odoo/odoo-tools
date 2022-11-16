@@ -1,17 +1,11 @@
-#!/bin/zsh
-
-# Command to run: `source switch-odoo.sh <version number>
-# Ex: `source switch-odoo.sh 12`
+#!/usr/bin/env bash
 
 odoo_src="${ODOO_SRC}/odoo/"
 enterprise_addons_src="${ODOO_SRC}/enterprise/"
 
-
 odoo_version=$1
 
-echo $odoo_version
-
-if [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
+if [ "$odoo_version" = "16" ] || [ "$odoo_version" = "15" ] || [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
 then
     git_version="${odoo_version:1}"
 
@@ -29,5 +23,5 @@ then
     echo "Successfully switched to version ${odoo_version}.0 of Odoo"
   
 else 
-      echo 'invalid version number, exitting'
+      echo 'invalid version number, exiting'
 fi
