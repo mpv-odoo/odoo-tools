@@ -1,13 +1,26 @@
 # Usage
 
 ## Odoo Switch (odoo-switch.sh)
-This script allows you to switch across different version of Odoo globally in 1 command. You can just call `source odoo-switch`
+This script allows you to switch across different version of Odoo globally in 1 command. The only argument is the integer Odoo version. It will checkout to the correct branch for both odoo and enterprise as well as change the pyenv to match the odoo version. 
+### Example
+```console
+odoo@odoo: $ source odoo-switch 15
+```
 
- ## Odoo Run (odoo-run.sh)
- This script allows you to run the odoo command globally and forwards any arguments you call it with to odoo. For example, you can just call `odoo -i base` rather than `/Users/martin/Documents/Work/Source/odoo/odoo-bin -i base`
+## Odoo Run (odoo-run.sh)
+This script allows you to run the odoo command globally. The first argument is the path of the configuration file you want to run odoo with, and the rest of the arguments are forwarded to odoo. You can also just use "default" as the odoo.conf and it will grab the odoo.conf from your current directory. 
+### Example
+```console
+odoo@odoo: $ odoo ./odoo.conf -d new_db -i base
+```
+
 
 ## Odoo Conf (odoo-conf.sh)
-This script will create a odoo.conf file in your current directory and add your current directory to odoo's addons path. 
+This script will create a odoo.conf file in your current directory based off of the odoo-sample.conf file in the root of the `ODOO_SRC` directory. It will also add your current directory to odoo's addons path. 
+### Example
+```console
+odoo@odoo: $ odoo-conf
+```
 
  # Installation
 
@@ -15,17 +28,16 @@ This script will create a odoo.conf file in your current directory and add your 
  - Install pyenv and create a virtual environment for each version of Odoo you want to run. 
    - Name them the integer of the version. E.g: `14`, `15`, `16`
 
-## Setting Environment Variable
-I use [zsh](https://ohmyz.sh/) (highly recommended for any terminal), so the steps might differ slightly if you use bash. Add an environment variable named `ODOO_SRC` for the location of your Odoo repos. It is used in both `odoo-switch.sh` and `odoo-run.sh` It assumes the following directory structure:
-  .
-  ├── odoo #odoo source code
-  ├──enterprise #enterprise source code
-  └──odoo-sample.conf #can copy from tools/odoo-sample.conf
+## Setting Up `ODOO_SRC`
+I use [zsh](https://ohmyz.sh/) (highly recommended for any terminal), so the steps might differ slightly if you use bash. Add an environment variable named `ODOO_SRC` for the location of your Odoo repos. It is used throughout the scripts and assumes the following directory structure:
+
+    ./ODOO_SRC
+    ├── odoo #odoo source code
+    ├── enterprise #enterprise source code
+    └── odoo-sample.conf #The template for odoo-conf.sh. (can copy from tools/odoo-sample.conf)
 
 ```console
-echo "
-export ODOO_SRC=/odoo/root/directory
-" >> ~/.zshrc.
+odoo@odoo: $ echo "export ODOO_SRC=/odoo/root/directory" >> ~/.zshrc.
 ```
 > **_NOTE:_** If you are using bash, change `~/.zshrc` to `~/.bashrc`
 
@@ -35,9 +47,12 @@ To be able to get these scripts running from any directory, you need to add them
 
 I create a symlink instead of copying the files over. A symlink is just a shortcut to the file, so any change I make to the files in my current directory will change the behavior of my global versions.
 
-Run the following script to symlink the files to the bin directory:
-`ln -s $(pwd)/tools/odoo-switch.sh /usr/local/bin/odoo-switch`
-`ln -s $(pwd)/tools/odoo-run.sh /usr/local/bin/odoo`
+Run the following commands to symlink the files to the bin directory:
+```console
+odoo@odoo: $ ln -s $(pwd)/tools/odoo-switch.sh /usr/local/bin/odoo-switch
+odoo@odoo: $ ln -s $(pwd)/tools/odoo-run.sh /usr/local/bin/odoo
+odoo@odoo: $ ln -s $(pwd)/tools/odoo-conf.sh /usr/local/bin/odoo-conf
+```
 
 Now if you `ls` into /usr/local/bin, you should see both `odoo-switch` and `odoo`. Restart your terminal, and you should be able to call `odoo-switch` and `odoo` and have these 2 scripts run.
 
