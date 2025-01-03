@@ -5,7 +5,7 @@ enterprise_addons_src="${ODOO_SRC}/enterprise/"
 
 odoo_version=$1
 
-if [ "$odoo_version" = "17" ] ||  [ "$odoo_version" = "16" ] || [ "$odoo_version" = "15" ] || [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
+if [ "$odoo_version" = "18" ] || [ "$odoo_version" = "17" ] ||  [ "$odoo_version" = "16" ] || [ "$odoo_version" = "15" ] || [ "$odoo_version" = "14" ] || [ "$odoo_version" = "13" ] || [ "$odoo_version" = "12" ] || [ "$odoo_version" = "11" ]
 then
     git_version="${odoo_version:1}"
 
